@@ -18,11 +18,12 @@ In this study we introduced a unified deep learning model for ECG analysis, pred
 ![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/dataset_ed-1.png?style=centerme)
 
 
-## MIMIC-IV-ECG-ICD and ED use case statistics:
+## ED subset and MIMIC-IV-ECG-ICD statistics:
 ![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/description.png?style=centerme)
 
 
 ## Deep-learning investigated architectures:
+(A) XResNet1d50 (B) S4
 ![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/architectures-1.png?style=centerme)
 
 
