@@ -1,65 +1,3 @@
-# resnet
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --architecture xresnet1d50 --finetune-dataset mimic_ed_all_edfirst_all_2000_5A --epochs 40 --export-predictions-path EXP_RESNET_4444/ > 0004.log
-
-
-
-# s4
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset mimic_ed_all_ed_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 
-
-
-
-
-
-
-# mimic_all_all_allfirst_all_2000_5A
-
-# evaluations
-# 1 all_all_allfirst_all_2000_5A: standard eval (doing both) 
-# 2 all_all_allfirst_hosp_2000_5A: only hospital discharge diagnosis (to do)
-# 3 all_all_edfirst_hosp_2000_5A: predicting hospital discharge diagnosis from ed ECG
-# 4 all_all_edfirst_ed_2000_5A: predicting ed discharge diagnosis from ed ECG (to do)
-
-# mimic_all_all_edfirst_all_2000_5A
-
-# s4_mimic_all_allI_allfirst_all_2000_5A (done)
-# s4_mimic_all_allaf_allfirst_all_2000_5A (done)
-
-
-# mimic_all_af_allfirst_af_2000_5A
-
-
-
-
-# EXP11: mimic_all_all_edfirst_all_2000_5A (trained on all ecgs)(tested on ed ecgs)
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset mimic_all_all_edfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --eval-only 1_s4_mimic_all_all_allfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP11/ > EXP11.log
-
-# EXP22: mimic_ed_all_edfirst_all (trained on ed ecgs) (tested on ed ecgs)
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset mimic_all_all_edfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --eval-only 4_s4_mimic_ed_all_edfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP22/ > EXP22.log
-
-
-
-
-# EXP_RESNET: mimic_all_all_allfirst_all_2000_5A (trained on all ecgs)(testes on all ecgs)
-#python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --architecture xresnet1d50 --finetune-dataset mimic_all_all_allfirst_all_2000_5A --epochs 40 --eval-only 0_resnet_mimic_all_all_allfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP_RESNET/
-
-# EXP_S4: mimic_all_all_allfirst_all_2000_5A (trained on all ecgs)(testes on all ecgs)
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset mimic_all_all_allfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --eval-only 1_s4_mimic_all_all_allfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP_S4/ > EXP_S4.log
-
-
-# EXP_AF: 
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset mimic_all_allaf_allfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --eval-only 3_s4_mimic_all_allaf_allfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP_AF/ > EXP_AF.log
-
-# EXP_I: 
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset s4_mimic_all_allI_allfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --eval-only 2_s4_mimic_all_allI_allfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP_I/ > EXP_I.log
-
-
-# EXP_I: 
-# python main_ecg.py --data /nfs/group/agaifh/datasets/ecg/mimic/memmap --input-size 250 --finetune-dataset mimic_ed_all_edfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --eval-only 4_s4_mimic_ed_all_edfirst_all_2000_5A/best_model.ckpt --export-predictions-path EXP_4444/
-
-
-
-###############
-
 import torch
 from torch import nn
 import lightning.pytorch as lp
@@ -76,6 +14,7 @@ from clinical_ts.xresnet1d import xresnet1d50,xresnet1d101
 from clinical_ts.inception1d import inception1d
 from clinical_ts.s4_model import S4Model
 from clinical_ts.misc_utils import add_default_args, LRMonitorCallback
+
 #################
 #specific
 from clinical_ts.timeseries_utils import *
@@ -456,12 +395,6 @@ class Main_ECG(lp.LightningModule):
             df_test = df_mapped[df_mapped.strat_fold==max_fold_id]
             
             
-            #df_train.to_csv('df_train_4444.csv', index=False)
-            #df_val.to_csv('df_val_4444.csv', index=False)
-            #df_test.to_csv('df_test_4444_all.csv', index=False)
-            
-            
-            
             train_datasets.append(TimeseriesDatasetCrops(df_train,self.hparams.input_size,data_folder=target_folder,chunk_length=chunk_length_train,min_chunk_length=self.hparams.input_size, stride=stride_train,transforms=tfms_ptb_xl_cpc,col_lbl ="label" ,memmap_filename=target_folder/("memmap.npy")))
             val_datasets.append(TimeseriesDatasetCrops(df_val,self.hparams.input_size,data_folder=target_folder,chunk_length=chunk_length_valtest,min_chunk_length=self.hparams.input_size, stride=stride_valtest,transforms=tfms_ptb_xl_cpc,col_lbl ="label",memmap_filename=target_folder/("memmap.npy")))
             test_datasets.append(TimeseriesDatasetCrops(df_test,self.hparams.input_size,data_folder=target_folder,chunk_length=chunk_length_valtest,min_chunk_length=self.hparams.input_size, stride=stride_valtest,transforms=tfms_ptb_xl_cpc,col_lbl ="label",memmap_filename=target_folder/("memmap.npy")))
@@ -475,17 +408,7 @@ class Main_ECG(lp.LightningModule):
                 print("train dataset:",len(train_datasets[-1]),"samples")
             print("val dataset:",len(val_datasets[-1]),"samples")
             print("test dataset:",len(test_datasets[-1]),"samples")
-            
-            
-            
-            #np.save('train_datasets_4444.npy', train_datasets)
-            #np.save('val_datasets_4444.npy', val_datasets)
-            #np.save('test_datasets_4444.npy', test_datasets)
-            
-            #np.save('test_datasets_first_5555.npy', test_datasets)
-            #np.save('lbl_itos_5555.npy', lbl_itos)
-            
-            
+        
 
             
         if(len(train_datasets)>1): #multiple data folders
