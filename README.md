@@ -8,8 +8,19 @@ In combination with (conditional) diffusion and state-space models, we put forwa
 ## Datasets and experiments
 
 
+## MIMIC-IV-ECG-ICD experimental workflow:
+![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/pipeline_mimic-1.png?style=centerme)
+
+## MIMIC-IV-ECG-ICD label-distributions:
+![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/dataset_all-1.png?style=centerme)
+
+## Main ED use case investigated in manuscript label-distributions:
+![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/dataset_ed-1.png?style=centerme)
+
+## MIMIC-IV-ECG-ICD and ED use case statistics:
+![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/description.png?style=centerme)
 
 
-## Deep-learning architecture:
-![alt text](https://github.com/AI4HealthUOL/SSSD/blob/main/reports/updated_architecture.png?style=centerme)
 
+## Deep-learning architectures:
+![alt text](https://github.com/AI4HealthUOL/ECG-MIMIC/blob/main/reports/architectures-1.png?style=centerme)
