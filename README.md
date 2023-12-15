@@ -29,10 +29,34 @@ In this study we introduced a unified deep learning model for ECG analysis, pred
 
 ## Datasets and experiments
 
+1. Datasets download
 
+
+
+2. Datasets preprocessing
+
+
+
+3. Models training
+
+
+T(ED2ALL)-E(ED2ALL)
+
+```
+python main_ecg.py --data <your data path> --input-size 250 --finetune-dataset mimic_ed_all_edfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --export-predictions-path T(ED2ALL)-E(ED2ALL)/ > T(ED2ALL)-E(ED2ALL).log
+```
+
+T(ALL2ALL)-E(ALL2ALL)
+
+```
+python main_ecg.py --data <your data path> --input-size 250 --finetune-dataset mimic_all_all_allfirst_all_2000_5A --architecture s4 --precision 32 --s4-n 8 --s4-h 512 --batch-size 32 --epochs 20 --export-predictions-path T(ALL2ALL)-E(ALL2ALL)/ > T(ALL2ALL)-E(ALL2ALL).log
+```
 
 ## Results
 You can find all the experimental results for each of the labels and scenarios under reports/Results_MIMIC_IV_ECG_ICD.csv
+
+
+
 
 
 ```bibtex
