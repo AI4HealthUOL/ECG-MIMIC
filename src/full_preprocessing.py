@@ -16,7 +16,7 @@ def main():
     parser = argparse.ArgumentParser(description='A script to extract two paths from the command line.')
     
     # Add arguments for the two paths
-    parser.add_argument('--mimic-path', help='path to mimic iv folder with subfolders hosp and ed',default="../../../../icu_data/mimiciv/2.2/")
+    parser.add_argument('--mimic-path', help='path to mimic iv folder with subfolders hosp and ed',default="./mimic")
     parser.add_argument('--zip-path', help='path to mimic ecg zip',default="mimic-iv-ecg-diagnostic-electrocardiogram-matched-subset-1.0.zip")
     parser.add_argument('--target-path', help='desired output path',default="./")
     
@@ -57,7 +57,7 @@ def main():
         df_hosp_admissions["dischtime"]=pd.to_datetime(df_hosp_admissions["dischtime"])
         df_hosp_admissions["deathtime"]=pd.to_datetime(df_hosp_admissions["deathtime"])
         
-        df_hosp_icd_description["icd10_code"]=df_hosp_icd_description.apply(lambda row:row["icd_code"] if row["icd_version"]==10 else mapper.map(row["icd_code"], mapper='icd9toicd10'),axis=1)
+        df_hosp_icd_description["icd10_code"]=df_hosp_icd_description.apply(lambda row:row["icd_code"] if row["icd_version"]==10 else mapper.map(row["icd_code"], source="icd9", target="icd10"),axis=1)#mapper="icd9toicd10"
         icd_mapping = {ic:ic10 for ic,ic10 in zip(df_hosp_icd_description["icd_code"],df_hosp_icd_description["icd10_code"])}
         df_ed_stays = pd.read_csv(mimic_path/"ed/edstays.csv.gz")
         df_ed_stays["intime"]=pd.to_datetime(df_ed_stays["intime"])
