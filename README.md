@@ -31,13 +31,32 @@ In this study we introduced a unified deep learning model for ECG analysis, pred
 
 1. Datasets download
 
+Download the [MIMIC-IV-ECG](https://physionet.org/content/mimic-iv-ecg/1.0/) dataset and the [MIMIC-IV](https://physionet.org/content/mimiciv/2.2/) dataset (with credentialed access).
 
 
 2. Datasets preprocessing
 
+Go under src/ and run the following command where your should replace the corresponding data paths
 
+```
+python full_preprocessing.py --mimic-path <path to mimic-iv directory ended in 'mimiciv/2.2/'> --zip-path <path to ecgs zip file> --target-path <desired output for preprocessed data default='./'>
+```
 
 3. Models training
+
+We provide full commands for two experiment scenarios, you should replace the data path for your preprocessed output file of the last step. For more scenarios experimentation adapt the --finetune-dataset argument accordly e.g. :
+
+mimic_{subsettrain}_{labelsettrain}_{subsettest}_{labelsettest}_{mincnt}_{digits} 
+
+{subsettrain}:all/ed/hosp/allnonzero/ednonzero/hospnonzero/allnonzerofirst/ednonzerofirst/hospnonzerofirst/allfirst/edfirst/hospfirst default: allnonzero
+
+{labelsettrain}: {all/hosp/ed} first part selects the label set all: both ed diagnosis and hosp diagnosis hosp: just hosp diagnosis ed: just ed diagnosis
+
+{subsettest}/{labelsettest}: similar than {subsettrain}/{labelsettrain}
+
+{mincnt}: minimum number of samples per label
+
+{digits}: 3/4/5/3A/4A/5A; append an A to include all ancestors
 
 
 T(ED2ALL)-E(ED2ALL)
