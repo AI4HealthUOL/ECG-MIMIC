@@ -32,4 +32,4 @@ In this study we introduced a unified deep learning model for ECG analysis, pred
 
 
 ## Results
-You can find all the experimental results for each of the labels and scenarios under ::reports/Results_MIMIC_IV_ECG_ICD.csv::
+You can find all the experimental results for each of the labels and scenarios under ==reports/Results_MIMIC_IV_ECG_ICD.csv==
