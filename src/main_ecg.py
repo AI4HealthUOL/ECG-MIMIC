@@ -29,6 +29,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+# mimic_{subsettrain}{labelsettrain}{subsettest}{labelsettest}{mincnt}_{digits}
+# {subsettrain}:all/ed/hosp/allnonzero/ednonzero/hospnonzero/allnonzerofirst/ednonzerofirst/hospnonzerofirst/allfirst/edfirst/hospfirst default: allnonzero
+# {labelsettrain}: {all/hosp/ed} first part selects the label set all: both ed diagnosis and hosp diagnosis hosp: just hosp diagnosis ed: just ed diagnosis
+# {subsettest}/{labelsettest}: similar than {subsettrain}/{labelsettrain}
+# {mincnt}: minimum number of samples per label
+# {digits}: 3/4/5/3A/4A/5A; append an A to include all ancestors
+
 MLFLOW_AVAILABLE=True
 try:
     import mlflow
