@@ -58,6 +58,7 @@ mimic_{subsettrain}_{labelsettrain}_{subsettest}_{labelsettest}_{mincnt}_{digits
 
 {digits}: 3/4/5/3A/4A/5A; append an A to include all ancestors
 
+These command should also export your test set predictions into a corresponding path directory (already specified in a command argument), and also save resulting AUROCs in an also specified log file.
 
 T(ED2ALL)-E(ED2ALL)
 
@@ -77,6 +78,7 @@ You can find all the experimental results for each of the labels and scenarios u
 
 
 
+## Reference
 
 ```bibtex
 @article{
