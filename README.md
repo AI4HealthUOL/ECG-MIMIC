@@ -44,19 +44,7 @@ python full_preprocessing.py --mimic-path <path to mimic-iv directory ended in '
 
 3. Models training
 
-We provide full commands for two experiment scenarios, you should replace the data path for your preprocessed output file of the last step. For more scenarios experimentation adapt the --finetune-dataset argument accordly e.g. :
-
-mimic_{subsettrain}_{labelsettrain}_{subsettest}_{labelsettest}_{mincnt}_{digits} 
-
-{subsettrain}:all/ed/hosp/allnonzero/ednonzero/hospnonzero/allnonzerofirst/ednonzerofirst/hospnonzerofirst/allfirst/edfirst/hospfirst default: allnonzero
-
-{labelsettrain}: {all/hosp/ed} first part selects the label set all: both ed diagnosis and hosp diagnosis hosp: just hosp diagnosis ed: just ed diagnosis
-
-{subsettest}/{labelsettest}: similar than {subsettrain}/{labelsettrain}
-
-{mincnt}: minimum number of samples per label
-
-{digits}: 3/4/5/3A/4A/5A; append an A to include all ancestors
+We provide full commands for two experiment scenarios, you should replace the data path for your preprocessed output file of the last step. For more scenarios experimentation adapt the --finetune-dataset argument accordly see lines 32-37 in src/main_ecg.py.
 
 These command should also export your test set predictions into a corresponding path directory (already specified in a command argument), and also save resulting AUROCs in an also specified log file.
 
