@@ -32,4 +32,19 @@ In this study we introduced a unified deep learning model for ECG analysis, pred
 
 
 ## Results
-You can find all the experimental results for each of the labels and scenarios under ==reports/Results_MIMIC_IV_ECG_ICD.csv==
+You can find all the experimental results for each of the labels and scenarios under reports/Results_MIMIC_IV_ECG_ICD.csv
+
+
+```bibtex
+@article{
+lopez alcaraz2022diffusionbased,
+title={Diffusion-based Time Series Imputation and Forecasting with Structured State Space Models},
+author={Juan Lopez Alcaraz and Nils Strodthoff},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2022},
+url={https://openreview.net/forum?id=hHiIbk7ApW},
+}
+
+```
+
