@@ -1,7 +1,7 @@
 # Cardiac and extracardiac discharge diagnosis prediction from emergency department ECGs using deep learning
 
 
-This repository hosts the code of the paper [Cardiac and extracardiac discharge diagnosis prediction from emergency department ECGs using deep learning](https://openreview.net/forum?id=hHiIbk7ApW&referrer=%5BTMLR%5D(%2Fgroup%3Fid%3DTMLR)). 
+This repository hosts the code of the paper [Cardiac and extracardiac discharge diagnosis prediction from emergency department ECGs using deep learning](https://arxiv.org/abs/2312.11050)). 
 In this study we introduced a unified deep learning model for ECG analysis, predicting a wide range of cardiac and non-cardiac discharge diagnoses based on the ICD10 classification system with impressive AUROC scores. Our approach excels in handling diverse diagnostic scenarios, suggesting its use as a screening tool in emergency departments, integrated into clinical decision support systems. We therefore propose the MIMIC-IV-ECG-ICD dataset derived from the MIMIC-IV and MIMIC-IV-ECG databases. 
 
 ## MIMIC-IV-ECG-ICD experimental workflow:
@@ -69,15 +69,13 @@ You can find all the experimental results for each of the labels and scenarios u
 ## Reference
 
 ```bibtex
-@article{
-lopez alcaraz2022diffusionbased,
-title={Diffusion-based Time Series Imputation and Forecasting with Structured State Space Models},
-author={Juan Lopez Alcaraz and Nils Strodthoff},
-journal={Transactions on Machine Learning Research},
-issn={2835-8856},
-year={2022},
-url={https://openreview.net/forum?id=hHiIbk7ApW},
+@misc{strodthoff2023cardiac,
+      title={Cardiac and extracardiac discharge diagnosis prediction from emergency department ECGs using deep learning}, 
+      author={Nils Strodthoff and Juan Miguel Lopez Alcaraz and Wilhelm Haverkamp},
+      year={2023},
+      eprint={2312.11050},
+      archivePrefix={arXiv},
+      primaryClass={eess.SP}
 }
-
 ```
 
