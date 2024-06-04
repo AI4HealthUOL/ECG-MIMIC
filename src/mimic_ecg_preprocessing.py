@@ -131,9 +131,9 @@ def prepare_mimic_ecg(finetune_dataset, target_folder, df_mapped=None, df_diags=
         print("Label set:",len(lbl_itos),"labels.")#,lbl_itos)
         
         #join the two dataframes
-        df_diags = df_diags.set_index("study")
-        df_diags.drop(["patient_id","ecg_time"],axis=1,inplace=True)
-        df_mapped = df_mapped.join(df_diags,on="study")
+        df_diags = df_diags.set_index("study_id")
+        df_diags.drop(["subject_id","ecg_time"],axis=1,inplace=True)
+        df_mapped = df_mapped.join(df_diags,on="study_id")
         max_fold = df_mapped.fold.max()
         
         #TRAIN select the desired subset (all/ed/hosp/allnonzero/ednonzero/hospnonzero)
