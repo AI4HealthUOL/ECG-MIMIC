@@ -72,28 +72,28 @@ def main():
         df_ed_stays["outtime"]=pd.to_datetime(df_ed_stays["outtime"])
         df_ed_diagnosis = pd.read_csv(mimic_path/"ed/diagnosis.csv.gz")
 
-        def get_diagnosis_hosp(patient_id, ecg_time):
-            df_ecg_during_hosp= df_hosp_admissions[(df_hosp_admissions.subject_id==patient_id) & (df_hosp_admissions.admittime<ecg_time) & ((df_hosp_admissions.dischtime>ecg_time)|(df_hosp_admissions.deathtime>ecg_time))]
+        def get_diagnosis_hosp(subject_id, ecg_time):
+            df_ecg_during_hosp= df_hosp_admissions[(df_hosp_admissions.subject_id==subject_id) & (df_hosp_admissions.admittime<ecg_time) & ((df_hosp_admissions.dischtime>ecg_time)|(df_hosp_admissions.deathtime>ecg_time))]
             if(len(df_ecg_during_hosp)==0):
                 return [],np.nan
             else:
                 if(len(df_ecg_during_hosp)>1):
-                    print("Error in get_diagnosis_hosp: multiple entries for",patient_id,ecg_time,". Considering only the first one.")
+                    print("Error in get_diagnosis_hosp: multiple entries for",subject_id,ecg_time,". Considering only the first one.")
                 hadm_id=df_ecg_during_hosp.hadm_id.iloc[0]
-                return list(df_hosp_icd_diagnoses[(df_hosp_icd_diagnoses.subject_id==patient_id)&(df_hosp_icd_diagnoses.hadm_id==hadm_id)].sort_values(by=['seq_num']).icd_code), hadm_id #diags_hosp, hadm_id
+                return list(df_hosp_icd_diagnoses[(df_hosp_icd_diagnoses.subject_id==subject_id)&(df_hosp_icd_diagnoses.hadm_id==hadm_id)].sort_values(by=['seq_num']).icd_code), hadm_id #diags_hosp, hadm_id
 
-        def get_diagnosis_ed(patient_id, ecg_time,also_hosp_diag=True):
-            df_ecg_during_ed = df_ed_stays[(df_ed_stays.subject_id==patient_id) & (df_ed_stays.intime<ecg_time) & (df_ed_stays.outtime>ecg_time)]
+        def get_diagnosis_ed(subject_id, ecg_time,also_hosp_diag=True):
+            df_ecg_during_ed = df_ed_stays[(df_ed_stays.subject_id==subject_id) & (df_ed_stays.intime<ecg_time) & (df_ed_stays.outtime>ecg_time)]
             if(len(df_ecg_during_ed)==0):
                 return ([],[],np.nan,np.nan) if also_hosp_diag else ([],np.nan)
             else:
                 if(len(df_ecg_during_ed)>1):
-                    print("Error in get_diagnosis_ed: multiple entries for",patient_id,ecg_time,". Considering only the first one.")
+                    print("Error in get_diagnosis_ed: multiple entries for",subject_id,ecg_time,". Considering only the first one.")
                 stay_id=df_ecg_during_ed.stay_id.iloc[0]
                 hadm_id=df_ecg_during_ed.hadm_id.iloc[0]#potentially none
-                res=list(df_ed_diagnosis[(df_ed_diagnosis.subject_id==patient_id)&(df_ed_diagnosis.stay_id==stay_id)].sort_values(by=['seq_num']).icd_code)
+                res=list(df_ed_diagnosis[(df_ed_diagnosis.subject_id==subject_id)&(df_ed_diagnosis.stay_id==stay_id)].sort_values(by=['seq_num']).icd_code)
                 if(also_hosp_diag):
-                    res2=list(df_hosp_icd_diagnoses[(df_hosp_icd_diagnoses.subject_id==patient_id)&(df_hosp_icd_diagnoses.hadm_id==hadm_id)].sort_values(by=['seq_num']).icd_code)
+                    res2=list(df_hosp_icd_diagnoses[(df_hosp_icd_diagnoses.subject_id==subject_id)&(df_hosp_icd_diagnoses.hadm_id==hadm_id)].sort_values(by=['seq_num']).icd_code)
                     return res, res2, stay_id, (np.nan if hadm_id is None else hadm_id) #diags_ed, diags_hosp, stay_id, hadm_id
                 else:
                     return res, stay_id #diags_ed, stay_id
@@ -103,14 +103,14 @@ def main():
 
         for id,row in tqdm(df.iterrows(),total=len(df)):
             tmp={}
-            tmp["filename"]=row["filename"]
-            tmp["study"]=row["study"]
-            tmp["patient_id"]=row["patient_id"]
+            tmp["file_name"]=row["file_name"]
+            tmp["study_id"]=row["study_id"]
+            tmp["subject_id"]=row["subject_id"]
             tmp["ecg_time"]=row["ecg_time"]
-            hosp_diag_hosp, hosp_hadm_id =get_diagnosis_hosp(row["patient_id"], row["ecg_time"])
+            hosp_diag_hosp, hosp_hadm_id =get_diagnosis_hosp(row["subject_id"], row["ecg_time"])
             tmp["hosp_diag_hosp"] = hosp_diag_hosp
             tmp["hosp_hadm_id"] =hosp_hadm_id
-            ed_diag_ed,ed_diag_hosp,ed_stay_id,ed_hadm_id = get_diagnosis_ed(row["patient_id"], row["ecg_time"])
+            ed_diag_ed,ed_diag_hosp,ed_stay_id,ed_hadm_id = get_diagnosis_ed(row["subject_id"], row["ecg_time"])
             tmp["ed_diag_ed"]=ed_diag_ed
             tmp["ed_diag_hosp"]=ed_diag_hosp
             tmp["ed_stay_id"]=ed_stay_id
@@ -140,12 +140,12 @@ def main():
 
         #add demographics
         df_hosp_patients = pd.read_csv(mimic_path/"hosp/patients.csv.gz")
-        df_full=df_full.join(df_hosp_patients.set_index("subject_id"),on="patient_id")
+        df_full=df_full.join(df_hosp_patients.set_index("subject_id"),on="subject_id")
         df_full["age"]=df_full.ecg_time.apply(lambda x: x.year)-df_full.anchor_year+df_full.anchor_age
 
         #add ecg number within stay
         df_full["ecg_no_within_stay"]=-1
-        df_full=df_full.sort_values(["patient_id","ecg_time"],ascending=True)
+        df_full=df_full.sort_values(["subject_id","ecg_time"],ascending=True)
 
         df_full.loc[~df_full.ed_stay_id.isna(),"ecg_no_within_stay"]=df_full[~df_full.ed_stay_id.isna()].groupby("ed_stay_id",as_index=False).cumcount()
         df_full.loc[~df_full.hosp_hadm_id.isna(),"ecg_no_within_stay"]=df_full[~df_full.hosp_hadm_id.isna()].groupby("hosp_hadm_id",as_index=False).cumcount()
@@ -171,7 +171,7 @@ def main():
         df_full['age_bin'] = df_full['age_bin'].cat.add_categories(['missing']).fillna('missing')
         df_full['gender'] = df_full['gender'].fillna('missing')
         col_label = "label_strat_all2all"
-        col_group = ['patient_id','age_bin','gender']
+        col_group = ['subject_id','age_bin','gender']
         res = stratified_subsets(df_full,
                        col_label,
                        [0.05]*20,
@@ -179,9 +179,9 @@ def main():
                        label_multi_hot=False,
                        random_seed=42)
         df_full['strat_fold'] = res
-        df=df[["filename",
-               "study",
-               "patient_id",
+        df=df[["file_name",
+               "study_id",
+               "subject_id",
                "ecg_time",
                "ed_stay_id",
                "ed_hadm_id",
