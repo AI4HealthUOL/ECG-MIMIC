@@ -13,20 +13,20 @@ def extract_and_open_files_in_zip(zip_file_path, extension):
     ecg_records = []
     with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
         for file_info in tqdm(zip_ref.infolist()):
-            if file_info.filename.endswith(extension):
+            if file_info.file_name.endswith(extension):
                 # Extract the file to a temporary directory
-                extract_path = file_info.filename
+                extract_path = file_info.file_name
                 os.makedirs(os.path.dirname(extract_path), exist_ok=True)
                 with open(extract_path, 'wb') as extracted_file:
-                    extracted_file.write(zip_ref.read(file_info.filename))
+                    extracted_file.write(zip_ref.read(file_info.file_name))
                 
                 # Open the extracted file using wfdb
                 metadata = wfdb.rdheader(extract_path[:-len(extension)])
                 file = Path(extract_path[:-len(extension)])
                 
                 tmp={}
-                tmp["filename"]=f'{file.parent}/{file.stem}'
-                tmp["study"]=int(file.stem)
+                tmp["file_name"]=f'{file.parent}/{file.stem}'
+                tmp["study_id"]=int(file.stem)
                 tmp["patient_id"]=int(file.parent.parent.stem[1:])
                 tmp['ecg_time']= datetime.datetime.combine(metadata.base_date,metadata.base_time)
                 ecg_records.append(tmp)                     
