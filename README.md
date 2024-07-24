@@ -76,18 +76,13 @@ You can find all the experimental results for each of the labels and scenarios u
 ## Reference
 
 ```bibtex
-@article{10.1093/ehjdh/ztae039,
-    author = {Strodthoff, Nils and Lopez Alcaraz, Juan Miguel and Haverkamp, Wilhelm},
-    title = "{Prospects for AI-Enhanced ECG as a Unified Screening Tool for Cardiac and Non-Cardiac Conditions – An Explorative Study in Emergency Care}",
-    journal = {European Heart Journal - Digital Health},
-    pages = {ztae039},
-    year = {2024},
-    month = {05},
-    abstract = "{Current deep learning algorithms designed for automatic ECG analysis have exhibited notable accuracy. However, akin to traditional electrocardiography, they tend to be narrowly focused and typically address a singular diagnostic condition. In this exploratory study, we specifically investigate the capability of a single model to predict a diverse range of both cardiac and non-cardiac discharge diagnoses based on a sole ECG collected in the emergency department. We find that 253, 81 cardiac and 172 non-cardiac, ICD codes can be reliably predicted in the sense of exceeding an AUROC score of 0.8 in a statistically significant manner. This underscores the model’s proficiency in handling a wide array of cardiac and non-cardiac diagnostic scenarios which demonstrates potential as a screening tool for diverse medical encounters.}",
-    issn = {2634-3916},
-    doi = {10.1093/ehjdh/ztae039},
-    url = {https://doi.org/10.1093/ehjdh/ztae039},
-    eprint = {https://academic.oup.com/ehjdh/advance-article-pdf/doi/10.1093/ehjdh/ztae039/57553846/ztae039.pdf},
+@article{strodthoff2024prospects,
+  title={Prospects for artificial intelligence-enhanced electrocardiogram as a unified screening tool for cardiac and non-cardiac conditions: an explorative study in emergency care},
+  author={Strodthoff, Nils and Lopez Alcaraz, Juan Miguel and Haverkamp, Wilhelm},
+  journal={European Heart Journal-Digital Health},
+  pages={ztae039},
+  year={2024},
+  publisher={Oxford University Press UK}
 }
 ```
 
