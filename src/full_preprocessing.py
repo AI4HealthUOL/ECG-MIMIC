@@ -10,7 +10,7 @@ from extract_headers import extract_and_open_files_in_zip
 from icdmappings import Mapper
 from ecg_utils import prepare_mimicecg
 from timeseries_utils import reformat_as_memmap
-
+from utils.stratify import stratified_subsets
 from mimic_ecg_preprocessing import prepare_mimic_ecg
 
 
