@@ -160,24 +160,27 @@ def main():
         
         # STRATIFIED FOLDS based on'all_diag'. folds not used in experiments, but provided for convenience
         df_full, _ = prepare_mimic_ecg('mimic_all_all_allfirst_all_2000_5A',target_folder,df_mapped=None,df_diags=df_full)
-        df_full['label'] = df_full['label'].apply(lambda x: x if x else ['outpatient'])
-        df_full['age_bin'] = pd.qcut(df_full['age'], q=4)
+        df_full['label_train'] = df_full['label_train'].apply(lambda x: x if x else ['outpatient'])
         df_full.rename(columns={'label_train':'label_strat_all2all'}, inplace=True)
-        df_full['label_strat_all2all'] = df_full['label_strat_all2all'].apply(lambda x: x if x else ['outpatient'])
         age_bins = pd.qcut(df_full['age'], q=4)
         unique_intervals = age_bins.cat.categories
         bin_labels = {interval: f'{interval.left}-{interval.right}' for interval in unique_intervals}
         df_full['age_bin'] = age_bins.map(bin_labels)
         df_full['age_bin'] = df_full['age_bin'].cat.add_categories(['missing']).fillna('missing')
         df_full['gender'] = df_full['gender'].fillna('missing')
-        col_label = "label_strat_all2all"
-        col_group = ['subject_id','age_bin','gender']
+        
+        df_full['merged_strat'] = df_full.apply(lambda row: row['label_strat_all2all'] + [row['age_bin'], row['gender']], axis=1)
+        
+        col_label = 'merged_strat'
+        col_group = 'subject_id'
+        
         res = stratified_subsets(df_full,
                        col_label,
                        [0.05]*20,
                        col_group=col_group,
                        label_multi_hot=False,
                        random_seed=42)
+        
         df_full['strat_fold'] = res
         df=df[["file_name",
                "study_id",
