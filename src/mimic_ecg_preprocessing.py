@@ -131,7 +131,7 @@ def prepare_mimic_ecg(finetune_dataset, target_folder, df_mapped=None, df_diags=
         return df_diags, lbl_itos
     
     
-    if(df_mapped is not None):
+    elif(df_mapped is not None):
         print("Label set:",len(lbl_itos),"labels.")#,lbl_itos)
         
         #join the two dataframes
