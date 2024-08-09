@@ -166,8 +166,8 @@ def main():
         unique_intervals = age_bins.cat.categories
         bin_labels = {interval: f'{interval.left}-{interval.right}' for interval in unique_intervals}
         df_full['age_bin'] = age_bins.map(bin_labels)
-        df_full['age_bin'] = df_full['age_bin'].cat.add_categories(['missing']).fillna('missing')
-        df_full['gender'] = df_full['gender'].fillna('missing')
+        df_full['age_bin'] = df_full['age_bin'].cat.add_categories(['missing_age']).fillna('missing_age')
+        df_full['gender'] = df_full['gender'].fillna('missing_gender')
         
         df_full['merged_strat'] = df_full.apply(lambda row: row['label_strat_all2all'] + [row['age_bin'], row['gender']], axis=1)
         
