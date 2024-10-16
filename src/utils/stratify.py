@@ -69,7 +69,6 @@ def stratified_subsets(df,col_label,subset_ratios,col_group=None,label_multi_hot
 
     multi_label = isinstance(df.iloc[0][col_label],list) or isinstance(df.iloc[0][col_label],np.ndarray)
     #find unique classes
-    
     if(not(multi_label)):
         classes = np.unique(df[col_label])
     else:
@@ -79,40 +78,27 @@ def stratified_subsets(df,col_label,subset_ratios,col_group=None,label_multi_hot
             col_label = col_label+"_tmp"
         else:
             classes = np.unique([item for sublist in list(df[col_label]) for item in sublist])
-                            
-            
+    
     if(col_group is not None):#col_group set- i.e. aggregate according to patients etc.
         df_group = df.groupby(col_group)[col_label].apply(lambda x: list(x)).to_frame()
         if(multi_label):#turn into flat list
-            if len(col_group)>1:
-                
-                df_group[col_label]=df_group[col_label].apply(lambda x: [item for sublist in x for item in sublist] if isinstance(x, list) else [])
-            else:
-                df_group[col_label]=df_group[col_label].apply(lambda x: [item for sublist in x for item in sublist])
-                
-        df_group["samples_per_group"] = df_group[col_label].apply(lambda x:len(x))        
-        
+            df_group[col_label]=df_group[col_label].apply(lambda x: [item for sublist in x for item in sublist])
+            
+        df_group["samples_per_group"] = df_group[col_label].apply(lambda x:len(x))
         group_ids = stratify(list(df_group[col_label]),classes,subset_ratios,list(df_group["samples_per_group"]),random_seed=random_seed)
         group_ids_lst = np.zeros(len(df_group),dtype=np.int8)
         ktoi = {k:i for i,k in enumerate(df_group.index.values)}
         for i in range(len(group_ids)-1):
             group_ids_lst[group_ids[i+1]] = i+1
 
-        if len(col_group)==1:
-            list(df[col_group].apply(lambda x: group_ids_lst[ktoi[x]]))
-        else:
-            return [group_ids_lst[ktoi[tuple(i)]] for i in df[col_group].values]
-            
-        
-        
+        return list(df[col_group].apply(lambda x: group_ids_lst[ktoi[x]]))
+
     else:
         ids_subsets = stratify(list(df[col_label]) if multi_label else list(df[col_label].apply(lambda x:[x])),classes,subset_ratios)
         ids_lst =  np.zeros(len(df),dtype=np.int8)
         for i in range(len(ids_subsets)-1):
             ids_lst[ids_subsets[i+1]]=i+1
         return ids_lst
-    
-    
 
 #######################################################################################
 #low-level routines
